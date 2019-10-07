@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from "react";
-import Header from "../componets/Header";
+import { connect } from 'react-redux';
 import Search from "../componets/Search";
 import Categories from "../componets/Categories";
 import Carousel from "../componets/Carousel";
 import CarouselItem from "../componets/CarouselItem";
-import Footer from "../componets/Footer";
 import "../assets/styles/App.scss";
 import useInitialState from '../hooks/useInitialState';
 
-const API = 'http://localhost:3000/initalState'
-
-const App = () => {
-  const initialState = useInitialState(API);
+const Home = ({ myList, trends, originals }) => {
 
   return (
-    <div className="App">
-      <Header />
-      <Search />
-      {initialState.mylist.length > 0 &&
+    <>
+      <Search isHome />
+      {myList.length > 0 &&
         <Categories title="Mi lista">
           <Carousel>
-            {initialState.mylist.map(item => 
-              <CarouselItem key={item.id} {...item} />
+            {myList.map(item => 
+              <CarouselItem
+                key={item.id}
+                {...item}
+                isList/>
             )}
           </Carousel>
         </Categories>
@@ -29,7 +27,7 @@ const App = () => {
 
       <Categories title="Tendencias">
         <Carousel>
-          {initialState.trends.map(item => 
+          {trends.map(item => 
             <CarouselItem key={item.id} {...item} />
           )}
         </Carousel>
@@ -37,14 +35,21 @@ const App = () => {
 
       <Categories title="Originales platzi initialState">
         <Carousel>
-          {initialState.originals.map(item => 
+          {originals.map(item => 
             <CarouselItem key={item.id} {...item} />
           )}
         </Carousel>
       </Categories>
-      <Footer />
-    </div>
+    </>
   );
 };
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    myList: state.myList,
+    trends: state.trends,
+    originals: state.originals,
+  };
+};
+
+export default connect(mapStateToProps, null)(Home);

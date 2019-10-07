@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 
 const useInitialState = (API) => {
   const [videos, setVideos] = useState({
-    mylist: [],
+    myList: [],
     trends: [],
-    originals: []
+    originals: [],
   });
 
   useEffect(() => {
